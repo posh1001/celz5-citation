@@ -120,7 +120,7 @@
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('LLM, LXP, Ministry Programs, Bibles Partnership','department')">
+                onclick="goToForm('LMMS, LXP, Ministry Programs, Bibles Partnership','department')">
                 <i data-feather="book" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">LMMS, LXP, Ministry Programs, Bibles Partnership</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
