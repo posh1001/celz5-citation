@@ -99,7 +99,7 @@
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
                 onclick="goToForm('Foundation School & First Timer Ministries','department')">
                 <i data-feather="user-plus" class="w-12 h-12 text-white mb-2"></i>
-                <h3 class="text-white font-semibold">Foundation School & First Timer Ministries</h3>
+                <h3 class="text-white font-semibold">Foundation School & First Timers Ministry</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 

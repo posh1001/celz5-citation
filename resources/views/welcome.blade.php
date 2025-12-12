@@ -43,11 +43,9 @@
         </h1>
 
         <p class="text-xl md:text-2xl mb-4 animate-slideInLeft animation-delay-500">
-            CELZ5 Citation is your comprehensive platform for tracking, submitting, and managing departmental and group citations with ease and efficiency.
+            CELZ5 Citation is your comprehensive platform for tracking, submitting, and managing individual, departmental and group citations with ease and efficiency.
         </p>
-        <p class="text-xl md:text-2xl mb-4 animate-slideInLeft animation-delay-700">
-            Seamlessly explore all our departments, groups, and submit your yearly citations in a modern, organized interface.
-        </p>
+
         <p class="text-xl md:text-2xl mb-4 animate-slideInLeft animation-delay-900">
             Built to enhance productivity and foster collaboration, CELZ5 Citation ensures your contributions are recognized and properly documented.
         </p>

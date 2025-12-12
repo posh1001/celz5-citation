@@ -38,8 +38,8 @@ feather.replace();
 // List of groups
 const groups = [
     'Lekki', 'Victoria Island', 'Alasia', 'Ikoyi Group 1', 'Ikoyi Group 2', 'Ajiwe', 'Obalende', 'Mobil',
-    'Chevron', 'Onisho', 'Ajah', 'Kajola', 'Lekki Phase 1', 'Epe', 'Lagos Island', 'Youth Church',
-    'Owode Badore', 'Trade Free Group', 'Eputu', 'Ogombo'
+    'Chevron', 'Onishon', 'Ajah', 'Kajola', 'Lekki Phase 1', 'Epe', 'Lagos Island', 'Youth Group',
+    'Owode Badore', 'Free Trade Zone', 'Eputu', 'Ogombo', 'Abijo', 'Tedo'
 ];
 
 const container = document.getElementById('groupContainer');
