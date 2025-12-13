@@ -56,7 +56,7 @@ groups.forEach(group => {
     // Click handler: store group and redirect
     card.addEventListener('click', () => {
         localStorage.setItem("selectedGroup", group);
-        window.location.href = "http://127.0.0.1:8000/group-form";
+        window.location.href = "/group-form";
     });
 
     container.appendChild(card);
