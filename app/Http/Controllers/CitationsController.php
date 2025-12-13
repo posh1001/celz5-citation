@@ -26,7 +26,6 @@ class CitationsController extends Controller
         // Departments Table
         // -------------------------
         $departmentsQuery = DepartmentForm::query();
-
         if ($search) {
             $departmentsQuery->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
@@ -40,7 +39,6 @@ class CitationsController extends Controller
                   ->orWhere('citation', 'like', "%{$search}%");
             });
         }
-
         $departments = $departmentsQuery->orderByDesc('created_at')
             ->paginate(10, ['*'], 'departmentsPage');
 
@@ -48,7 +46,6 @@ class CitationsController extends Controller
         // Groups Table
         // -------------------------
         $groupsQuery = GroupForm::query();
-
         if ($search) {
             $groupsQuery->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
@@ -62,7 +59,6 @@ class CitationsController extends Controller
                   ->orWhere('citation', 'like', "%{$search}%");
             });
         }
-
         $groups = $groupsQuery->orderByDesc('created_at')
             ->paginate(10, ['*'], 'groupsPage');
 
@@ -91,28 +87,40 @@ class CitationsController extends Controller
     public function exportExcel(Request $request)
     {
         $filter = $request->query('filter', 'all');
-        $data = $this->getFilteredData($filter);
+        $search = $request->query('search');
+
+        $data = $this->getFilteredData($filter, $search);
+
         return Excel::download(new CitationsExport($data), $filter.'_citations.xlsx');
     }
 
     public function exportCSV(Request $request)
     {
         $filter = $request->query('filter', 'all');
-        $data = $this->getFilteredData($filter);
+        $search = $request->query('search');
+
+        $data = $this->getFilteredData($filter, $search);
+
         return Excel::download(new CitationsExport($data), $filter.'_citations.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     public function exportPDF(Request $request)
     {
         $filter = $request->query('filter', 'all');
-        $data = $this->getFilteredData($filter);
-        return Pdf::loadView('exports.citations_pdf', ['citations' => $data])->download($filter.'_citations.pdf');
+        $search = $request->query('search');
+
+        $data = $this->getFilteredData($filter, $search);
+
+        return Pdf::loadView('exports.citations_pdf', ['citations' => $data])
+            ->download($filter.'_citations.pdf');
     }
 
     public function exportWord(Request $request)
     {
         $filter = $request->query('filter', 'all');
-        $data = $this->getFilteredData($filter);
+        $search = $request->query('search');
+
+        $data = $this->getFilteredData($filter, $search);
 
         $export = new CitationsExport($data);
         $rows = $export->collection()->toArray();
@@ -152,16 +160,72 @@ class CitationsController extends Controller
     }
 
     /**
-     * Helper: get data based on filter
+     * Helper: get data based on filter and optional search
      */
-    private function getFilteredData($filter)
+    private function getFilteredData($filter, $search = null)
     {
         if ($filter === 'departments') {
-            return DepartmentForm::all();
+            $query = DepartmentForm::query();
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('fullname', 'like', "%{$search}%")
+                      ->orWhere('unit', 'like', "%{$search}%")
+                      ->orWhere('designation', 'like', "%{$search}%")
+                      ->orWhere('kingschat', 'like', "%{$search}%")
+                      ->orWhere('phone', 'like', "%{$search}%")
+                      ->orWhere('department', 'like', "%{$search}%")
+                      ->orWhere('period', 'like', "%{$search}%")
+                      ->orWhere('citation', 'like', "%{$search}%");
+                });
+            }
+            return $query->get(); // Always returns collection
         } elseif ($filter === 'groups') {
-            return GroupForm::all();
+            $query = GroupForm::query();
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('fullname', 'like', "%{$search}%")
+                      ->orWhere('unit', 'like', "%{$search}%")
+                      ->orWhere('designation', 'like', "%{$search}%")
+                      ->orWhere('kingschat', 'like', "%{$search}%")
+                      ->orWhere('phone', 'like', "%{$search}%")
+                      ->orWhere('group_name', 'like', "%{$search}%")
+                      ->orWhere('period', 'like', "%{$search}%")
+                      ->orWhere('citation', 'like', "%{$search}%");
+                });
+            }
+            return $query->get(); // Always returns collection
         } else {
-            return DepartmentForm::all()->merge(GroupForm::all())->map(function ($item) {
+            $departments = DepartmentForm::when($search, function ($q) use ($search) {
+                $q->where(function ($q2) use ($search) {
+                    $q2->where('title', 'like', "%{$search}%")
+                       ->orWhere('fullname', 'like', "%{$search}%")
+                       ->orWhere('unit', 'like', "%{$search}%")
+                       ->orWhere('designation', 'like', "%{$search}%")
+                       ->orWhere('kingschat', 'like', "%{$search}%")
+                       ->orWhere('phone', 'like', "%{$search}%")
+                       ->orWhere('department', 'like', "%{$search}%")
+                       ->orWhere('period', 'like', "%{$search}%")
+                       ->orWhere('citation', 'like', "%{$search}%");
+                });
+            })->get();
+
+            $groups = GroupForm::when($search, function ($q) use ($search) {
+                $q->where(function ($q2) use ($search) {
+                    $q2->where('title', 'like', "%{$search}%")
+                       ->orWhere('fullname', 'like', "%{$search}%")
+                       ->orWhere('unit', 'like', "%{$search}%")
+                       ->orWhere('designation', 'like', "%{$search}%")
+                       ->orWhere('kingschat', 'like', "%{$search}%")
+                       ->orWhere('phone', 'like', "%{$search}%")
+                       ->orWhere('group_name', 'like', "%{$search}%")
+                       ->orWhere('period', 'like', "%{$search}%")
+                       ->orWhere('citation', 'like', "%{$search}%");
+                });
+            })->get();
+
+            return $departments->merge($groups)->map(function ($item) {
                 $item->created_at = Carbon::parse($item->created_at);
                 return $item;
             });

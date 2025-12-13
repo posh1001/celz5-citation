@@ -150,8 +150,7 @@
             </div>
         @endif
 
-        <form id="multiStepForm" class="space-y-6 text-white" method="POST"
-           action="{{ route('group-form.store') }}">
+        <form id="multiStepForm" class="space-y-6 text-white" method="POST" action="{{ route('group-form.store') }}">
 
             @csrf
             <!-- Step 1: Personal Info -->
