@@ -58,5 +58,4 @@ class CitationsExport implements FromCollection, WithHeadings
             'Created At',
         ];
     }
-
 }
