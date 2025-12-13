@@ -140,46 +140,66 @@
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
+            <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
+                onclick="goToForm('Prayer','department')">
+                <i data-feather="heart" class="w-12 h-12 text-white mb-2"></i>
+                <h3 class="text-white font-semibold">Prayer</h3>
+                <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
+            </div>
+
+            <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
+                onclick="goToForm('Evangelism','department')">
+                <i data-feather="send" class="w-12 h-12 text-white mb-2"></i>
+                <h3 class="text-white font-semibold">Evangelism</h3>
+                <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
+            </div>
+
+            <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
+                onclick="goToForm('Sceptre','department')">
+                <i data-feather="star" class="w-12 h-12 text-white mb-2"></i>
+                <h3 class="text-white font-semibold">Sceptre</h3>
+                <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
+            </div>
+
         </div>
     </section>
 
 
 
-     <script>
-    feather.replace();
+    <script>
+        feather.replace();
 
-    function goToForm(departmentName) {
-        // Store the selected department in localStorage
-        localStorage.setItem("selectedDepartment", departmentName);
+        function goToForm(departmentName) {
+            // Store the selected department in localStorage
+            localStorage.setItem("selectedDepartment", departmentName);
 
-        // Redirect to the form page
-        window.location.href = "/dept-form"; // Change this to your actual form route
-    }
-</script>
+            // Redirect to the form page
+            window.location.href = "/dept-form"; // Change this to your actual form route
+        }
+    </script>
 
-<script>
-// Get department from URL
-const params = new URLSearchParams(window.location.search);
-const departmentFromURL = params.get('department');
+    <script>
+        // Get department from URL
+        const params = new URLSearchParams(window.location.search);
+        const departmentFromURL = params.get('department');
 
-if (departmentFromURL) {
-    // Prefill department select
-    const departmentSelect = document.querySelector('select[name="department"]');
-    if (departmentSelect) {
-        departmentSelect.value = departmentFromURL;
-    }
+        if (departmentFromURL) {
+            // Prefill department select
+            const departmentSelect = document.querySelector('select[name="department"]');
+            if (departmentSelect) {
+                departmentSelect.value = departmentFromURL;
+            }
 
-    // Update breadcrumb
-    const breadcrumbDept = document.getElementById('selectedDepartment').querySelector('span');
-    if (breadcrumbDept) {
-        breadcrumbDept.textContent = departmentFromURL;
-    }
+            // Update breadcrumb
+            const breadcrumbDept = document.getElementById('selectedDepartment').querySelector('span');
+            if (breadcrumbDept) {
+                breadcrumbDept.textContent = departmentFromURL;
+            }
 
-    // Optionally, jump to Step 2
-    currentStep = 1;
-    showStep(currentStep);
-}
-
+            // Optionally, jump to Step 2
+            currentStep = 1;
+            showStep(currentStep);
+        }
     </script>
 
 </body>

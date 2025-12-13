@@ -18,7 +18,7 @@ class GroupForm extends Model
         'designation',
         'kingschat',
         'phone',
-        'department',
+        'group_name',
         'period',
         'citation',
     ];

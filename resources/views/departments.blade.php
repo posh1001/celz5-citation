@@ -38,116 +38,135 @@
         </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
-            <!-- Departments -->
+            <!-- Department Cards -->
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Cell Ministry','department')">
+                onclick="selectDepartment('Cell Ministry')">
                 <i data-feather="users" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Cell Ministry</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Zonal Operations','department')">
+                onclick="selectDepartment('Zonal Operations')">
                 <i data-feather="settings" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Zonal Operations</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Church Admin / Pioneering & Visitation','department')">
+                onclick="selectDepartment('Church Admin / Pioneering & Visitation')">
                 <i data-feather="clipboard" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Church Admin / Pioneering & Visitation</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Rhapsody of Realities','department')">
+                onclick="selectDepartment('Rhapsody of Realities')">
                 <i data-feather="book-open" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Rhapsody of Realities</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Healing School','department')">
+                onclick="selectDepartment('Healing School')">
                 <i data-feather="heart" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Healing School</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Finance','department')">
+                onclick="selectDepartment('Finance')">
                 <i data-feather="credit-card" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Finance</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('TV Production','department')">
+                onclick="selectDepartment('TV Production')">
                 <i data-feather="video" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">TV Production</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Ministry Material','department')">
+                onclick="selectDepartment('Ministry Material')">
                 <i data-feather="file-text" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Ministry Material</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Foundation School & First Timer Ministries','department')">
+                onclick="selectDepartment('Foundation School & First Timer Ministries')">
                 <i data-feather="user-plus" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Foundation School & First Timers Ministry</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Love World Music Department','department')">
+                onclick="selectDepartment('Love World Music Department')">
                 <i data-feather="music" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Love World Music Department</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Global Mission / HR / Admin','department')">
+                onclick="selectDepartment('Global Mission / HR / Admin')">
                 <i data-feather="globe" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Global Mission / HR / Admin</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Children & Women Ministries','department')">
+                onclick="selectDepartment('Children & Women Ministries')">
                 <i data-feather="users" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Children & Women Ministries</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('LLM, LXP, Ministry Programs, Bibles Partnership','department')">
+                onclick="selectDepartment('LLM, LXP, Ministry Programs, Bibles Partnership')">
                 <i data-feather="book" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">LMMS, LXP, Ministry Programs, Bibles Partnership</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('LW USA, LTM / Radio Brands, Inner City Missions','department')">
+                onclick="selectDepartment('LW USA, LTM / Radio Brands, Inner City Missions')">
                 <i data-feather="flag" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">LW USA, LTM / Radio Brands, Inner City Missions</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
             <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
-                onclick="goToForm('Follow Up Department','department')">
+                onclick="selectDepartment('Follow Up Department')">
                 <i data-feather="refresh-cw" class="w-12 h-12 text-white mb-2"></i>
                 <h3 class="text-white font-semibold">Follow Up Department</h3>
                 <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
             </div>
 
+            <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
+                onclick="selectDepartment('Prayer')">
+                <i data-feather="heart" class="w-12 h-12 text-white mb-2"></i>
+                <h3 class="text-white font-semibold">Prayer</h3>
+                <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
+            </div>
+
+            <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
+                onclick="selectDepartment('Evangelism')">
+                <i data-feather="send" class="w-12 h-12 text-white mb-2"></i>
+                <h3 class="text-white font-semibold">Evangelism</h3>
+                <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
+            </div>
+
+            <div class="glass p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:scale-105 transition-transform"
+                onclick="selectDepartment('Sceptre')">
+                <i data-feather="star" class="w-12 h-12 text-white mb-2"></i>
+                <h3 class="text-white font-semibold">Sceptre</h3>
+                <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
+            </div>
+
         </div>
     </section>
-
 
     <footer class="mt-16 text-center text-white/70">
         &copy; 2025 CELZ5 Citation. All rights reserved.
@@ -156,39 +175,11 @@
     <script>
         feather.replace();
 
-        function goToForm(value, type) {
-            // Redirect to form page with query params
-            window.location.href = `/form?${type}=${encodeURIComponent(value)}`;
+        // Store department in localStorage and redirect
+        function selectDepartment(departmentName) {
+            localStorage.setItem('selectedDepartment', departmentName);
+            window.location.href = '/dept-form'; // Replace with your actual form page
         }
-
-        function goToForm(departmentName) {
-    // Encode department name and navigate to form page
-    const url = `http://127.0.0.1:8000/dept-form?department=${encodeURIComponent(departmentName)}`;
-    window.location.href = url;
-}
-
-// Get department from URL
-const params = new URLSearchParams(window.location.search);
-const departmentFromURL = params.get('department');
-
-if (departmentFromURL) {
-    // Prefill department select
-    const departmentSelect = document.querySelector('select[name="department"]');
-    if (departmentSelect) {
-        departmentSelect.value = departmentFromURL;
-    }
-
-    // Update breadcrumb
-    const breadcrumbDept = document.getElementById('selectedDepartment').querySelector('span');
-    if (breadcrumbDept) {
-        breadcrumbDept.textContent = departmentFromURL;
-    }
-
-    // Optionally, jump to Step 2
-    currentStep = 1;
-    showStep(currentStep);
-}
-
     </script>
 
 </body>

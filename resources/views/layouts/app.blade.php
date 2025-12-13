@@ -1,4 +1,4 @@
-<!-- resources/views/layouts/app.blade.php -->
+
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -7,12 +7,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'CELZ5 Citation')</title>
+     <link rel="icon" type="image/png" href="{{ asset('images/logo2.png') }}">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo2.png') }}">
 
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>

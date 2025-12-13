@@ -13,41 +13,48 @@
 
 <body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-['Inter'] min-h-screen p-6">
     <!-- Admin Navbar -->
-<nav class="bg-[rgba(255,255,255,0.06)] backdrop-blur-md border-b border-[rgba(255,255,255,0.12)] px-6 py-3 flex items-center justify-between">
-    <!-- Left: Logo / Brand -->
-  @php
-    // Get the logged-in user
-    $user = auth()->user();
-    // Generate initials from full name
-    $initials = collect(explode(' ', $user->name ?? $user->fullname))
-        ->map(fn($word) => strtoupper(substr($word, 0, 1)))
-        ->take(2) // first 2 letters
-        ->implode('');
-@endphp
+    <nav
+        class="bg-[rgba(255,255,255,0.06)] backdrop-blur-md border-b border-[rgba(255,255,255,0.12)] px-6 py-3 flex items-center justify-between">
+        <!-- Left: Logo / Brand -->
+        @php
+            // Get the logged-in user
+            $user = auth()->user();
+            // Generate initials from full name
+            $initials = collect(explode(' ', $user->name ?? $user->fullname))
+                ->map(fn($word) => strtoupper(substr($word, 0, 1)))
+                ->take(2) // first 2 letters
+                ->implode('');
+        @endphp
 
-<div class="flex items-center space-x-3">
-    <div class="h-8 w-8 rounded-full bg-indigo-400 flex items-center justify-center text-white font-semibold">
-        {{ $initials }}
-    </div>
-    <span class="text-white font-semibold text-lg">{{ $user->name ?? $user->fullname }}</span>
-</div>
+        <div class="flex items-center space-x-3">
+            <div class="h-8 w-8 rounded-full bg-indigo-400 flex items-center justify-center text-white font-semibold">
+                {{ $initials }}
+            </div>
+            <span class="text-white font-semibold text-lg">{{ $user->name ?? $user->fullname }}</span>
+        </div>
 
 
-    <!-- Right: Actions -->
-    <div class="flex items-center space-x-4">
+        <!-- Right: Actions -->
+        <div class="flex items-center space-x-4">
 
-        <!-- Logout -->
-        <form method="POST" action="{{ route('admin.logout') }}">
-            @csrf
-            <button type="submit" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-pink-500 text-white rounded-lg hover:opacity-90 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 11-4 0v-1m0-8V7a2 2 0 114 0v1" />
-                </svg>
-                Logout
-            </button>
-        </form>
-    </div>
-</nav>
+            <!-- Logout -->
+            <form method="POST" action="{{ route('admin.logout') }}">
+                @csrf
+                <button type="submit"
+                    class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-pink-500 text-white rounded-lg hover:opacity-90 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 11-4 0v-1m0-8V7a2 2 0 114 0v1" />
+                    </svg>
+                    Logout
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <br>
+    <br>
 
 
     <div class="container mx-auto" x-data="citationDashboard()">
@@ -59,35 +66,70 @@
         </header>
 
         <!-- Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="glass p-6 rounded-xl shadow-lg transform hover:-translate-y-2 transition-all duration-500">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+            <!-- Departments Card -->
+            <div
+                class="glass p-6 rounded-xl shadow-lg transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 bg-white/20 backdrop-blur-md">
                 <div class="flex items-center space-x-4">
-                    <i data-feather="layers" class="w-8 h-8 text-indigo-500"></i>
+                    <i data-feather="server" class="w-10 h-10 text-indigo-400"></i>
                     <div>
-                        <h2 class="text-xl font-semibold">Departments</h2>
-                        <p class="text-gray-200 mt-1">Total Department: {{ $departmentsCount }}</p>
+                        <h2 class="text-xl font-semibold text-white">Departments</h2>
+                        <p class="text-gray-700 mt-1">
+                            Total Departments: {{ $departmentsCount }}
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="glass p-6 rounded-xl shadow-lg transform hover:-translate-y-2 transition-all duration-500">
+            <!-- Citations Card -->
+            <div
+                class="glass p-6 rounded-xl shadow-lg transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 bg-white/20 backdrop-blur-md">
                 <div class="flex items-center space-x-4">
-                    <i data-feather="file-text" class="w-8 h-8 text-yellow-500"></i>
+                    <i data-feather="file-text" class="w-10 h-10 text-yellow-400"></i>
                     <div>
-                        <h2 class="text-xl font-semibold">Citations</h2>
-                        <p class="text-gray-200 mt-1">Total Citation Submitted: {{ $citationsCount }}</p>
+                        <h2 class="text-xl font-semibold text-white">Citations</h2>
+                        <p class="text-gray-700 mt-1">
+                            Total Citations Submitted: {{ $citationsCount }}
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <!-- Groups Card -->
+            <div
+                class="glass p-6 rounded-xl shadow-lg transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 bg-white/20 backdrop-blur-md">
+                <div class="flex items-center space-x-4">
+                    <i data-feather="users" class="w-10 h-10 text-green-400"></i>
+                    <div>
+                        <h2 class="text-xl font-semibold text-white">Groups</h2>
+                        <p class="text-gray-700 mt-1">
+                            Total Groups: {{ $groupsCount }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
+        <!-- Initialize Feather icons -->
+        <script>
+            feather.replace();
+        </script>
+
+        <br>
+        <br>
+
+        <!-- Departments Table -->
+        <h2 class="text-2xl text-white font-semibold my-6">Department Citations</h2>
+
         <!-- Search & Export -->
-        <div class="flex flex-col md:flex-row items-center justify-between mb-4 space-y-4 md:space-y-0">
-            <!-- Modern Search Bar -->
-            <div class="w-full md:w-1/3 mb-6 relative">
-                <input type="text" id="searchInput" placeholder="Search by Name, Group, or Department..."
+        <!-- ===================== SEARCH & EXPORT DEPARTMENT ===================== -->
+        <div class="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0">
+            <!-- Department Search Bar -->
+            <div class="w-full md:w-1/3 relative mb-4">
+                <input type="text" id="departmentSearch" placeholder="Search Department Table..."
                     class="glass p-3 pl-10 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300">
-                <!-- Search icon -->
                 <svg class="w-5 h-5 absolute left-3 top-3 text-gray-400 pointer-events-none" fill="none"
                     stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -95,99 +137,40 @@
                 </svg>
             </div>
 
-            {{-- EXPORT DATA --}}
-
-            <div class="flex space-x-3">
-                <a href="{{ route('citations.exportExcel') }}"
-                    class="glass px-4 py-2 rounded-lg hover:bg-indigo-600 transition-all">
-                    Export Excel
-                </a>
-
-                <a href="{{ route('citations.exportCSV') }}"
-                    class="glass px-4 py-2 rounded-lg hover:bg-pink-600 transition-all">
-                    Export CSV
-                </a>
-
-                <a href="{{ route('citations.exportWord') }}"
-                    class="glass px-4 py-2 rounded-lg hover:bg-yellow-600 transition-all">
-                    Export Word
-                </a>
+            <!-- Department Export Buttons -->
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('departments.exportExcel') }}"
+                    class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition-all">Excel</a>
+                <a href="{{ route('departments.exportCSV') }}"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition-all">CSV</a>
+                <a href="{{ route('departments.exportPDF') }}"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 transition-all">PDF</a>
+                <a href="{{ route('departments.exportWord') }}"
+                    class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-500 transition-all">Word</a>
             </div>
-
-
         </div>
 
-        <!-- Table -->
-        <div class="overflow-x-auto glass rounded-xl shadow-lg">
-            <table class="min-w-full text-left border-collapse shadow-lg rounded-lg overflow-hidden">
+        <!-- Department Table -->
+        <div class="overflow-x-auto glass rounded-xl shadow-lg mb-10">
+            <table class="min-w-full text-left border-collapse shadow-lg rounded-lg overflow-hidden"
+                id="departmentTable">
                 <thead
                     class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-sm tracking-wide">
                     <tr>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-clipboard text-white text-lg"></i>
-                                <span>Title.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-user text-white text-lg"></i>
-                                <span>Full Name.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-building text-white text-lg"></i>
-                                <span>Unit.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-briefcase text-white text-lg"></i>
-                                <span>Designation.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-chat-text text-white text-lg"></i>
-                                <span>Kingschat Handle.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-phone text-white text-lg"></i>
-                                <span>Phone.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-office-building text-white text-lg"></i>
-                                <span>Department.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-calendar text-white text-lg"></i>
-                                <span>Period.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-file-text text-white text-lg"></i>
-                                <span>Citation.</span>
-                            </div>
-                        </th>
-                        <th class="p-3 align-top">
-                            <div class="flex flex-col items-start space-y-1">
-                                <i class="ph ph-clock text-white text-lg"></i>
-                                <span>Created At.</span>
-                            </div>
-                        </th>
+                        <th class="p-3">Title</th>
+                        <th class="p-3">Full Name</th>
+                        <th class="p-3">Unit</th>
+                        <th class="p-3">Designation</th>
+                        <th class="p-3">Kingschat Handle</th>
+                        <th class="p-3">Phone</th>
+                        <th class="p-3">Department</th>
+                        <th class="p-3">Period</th>
+                        <th class="p-3">Citation</th>
+                        <th class="p-3">Created At</th>
                     </tr>
                 </thead>
-
                 <tbody class="bg-white/5 text-white/90 divide-y divide-white/20">
-                    @forelse ($citations as $citation)
+                    @forelse ($departmentCitations as $citation)
                         <tr class="hover:bg-white/10 transition-all">
                             <td class="p-3">{{ $citation->title ?? 'N/A' }}</td>
                             <td class="p-3">{{ $citation->fullname ?? 'N/A' }}</td>
@@ -199,164 +182,183 @@
                             <td class="p-3">{{ $citation->period ?? 'N/A' }}</td>
                             <td class="p-3 flex items-center space-x-2">
                                 <span>{{ Str::limit($citation->citation ?? 'N/A', 30, '...') }}</span>
-                                <button
-                                    @click="openModal('{{ addslashes($citation->fullname ?? '') }}', '{{ addslashes($citation->citation ?? '') }}')"
-                                    class="text-indigo-400 underline ml-2 hover:text-indigo-200 transition-all">
-                                    View More
-                                </button>
+                                @if (strlen($citation->citation ?? '') > 30)
+                                    <button
+                                        onclick="openDepartmentModal('{{ addslashes($citation->fullname ?? '') }}', '{{ addslashes($citation->citation ?? '') }}')"
+                                        class="text-indigo-400 underline ml-2 hover:text-indigo-200 transition-all">
+                                        View More
+                                    </button>
+                                @endif
                             </td>
-                            <td class="p-3">
-                                {{ $citation->created_at ? $citation->created_at->format('d-m-Y H:i') : 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->created_at?->format('d-m-Y H:i') ?? 'N/A' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="p-4 text-center text-white/80">No citations found.</td>
+                            <td colspan="10" class="p-4 text-center text-white/80">No department citations found.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
-        </div>
 
-
-        <div class="mt-4">
-            {{ $citations->withQueryString()->links('pagination::tailwind') }}
-        </div>
-
-
-        <!-- Modal -->
-        <div x-show="open" x-cloak
-            class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300">
-            <div
-                class="bg-white/10 backdrop-blur-lg border border-white/20 p-6 rounded-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto relative shadow-xl">
-                <!-- Close Button -->
-                <button @click="close()"
-                    class="absolute top-4 right-4 text-white/80 hover:text-white text-2xl transition-colors">&times;</button>
-
-                <!-- Sender -->
-                <h2 class="text-2xl font-semibold mb-4 text-white/90">Sender: <span x-text="fullname"></span></h2>
-
-                <!-- Message -->
-                <p class="text-white/80 whitespace-pre-wrap break-words text-lg leading-relaxed" x-text="citation">
-                </p>
+            {{-- Department Pagination --}}
+            <div class="mt-6">
+                {{ $departmentCitations->links() }}
             </div>
         </div>
 
-    </div>
+        <!-- ===================== SEARCH & EXPORT GROUPS ===================== -->
+        <div class="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0">
+            <!-- Group Search Bar -->
+            <div class="w-full md:w-1/3 relative mb-4">
+                <input type="text" id="groupSearch" placeholder="Search Group Table..."
+                    class="glass p-3 pl-10 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300">
+                <svg class="w-5 h-5 absolute left-3 top-3 text-gray-400 pointer-events-none" fill="none"
+                    stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
 
-    <script>
-        feather.replace();
+            <!-- Group Export Buttons -->
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('groups.exportExcel') }}"
+                    class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition-all">Excel</a>
+                <a href="{{ route('groups.exportCSV') }}"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition-all">CSV</a>
+                <a href="{{ route('groups.exportPDF') }}"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 transition-all">PDF</a>
+                <a href="{{ route('groups.exportWord') }}"
+                    class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-500 transition-all">Word</a>
+            </div>
+        </div>
 
-        function citationDashboard() {
-            return {
-                open: false,
-                fullname: '',
-                citation: '',
-                openModal(name, citationText) {
-                    this.fullname = name;
-                    this.citation = citationText;
-                    this.open = true;
-                },
-                close() {
-                    this.open = false;
-                }
+        <!-- Group Table -->
+        <div class="overflow-x-auto glass rounded-xl shadow-lg mb-10">
+            <table class="min-w-full text-left border-collapse shadow-lg rounded-lg overflow-hidden" id="groupTable">
+                <thead
+                    class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-sm tracking-wide">
+                    <tr>
+                        <th class="p-3">Title</th>
+                        <th class="p-3">Full Name</th>
+                        <th class="p-3">Unit</th>
+                        <th class="p-3">Designation</th>
+                        <th class="p-3">Kingschat Handle</th>
+                        <th class="p-3">Phone</th>
+                        <th class="p-3">Department</th>
+                        <th class="p-3">Group Name</th>
+                        <th class="p-3">Period</th>
+                        <th class="p-3">Citation</th>
+                        <th class="p-3">Created At</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white/5 text-white/90 divide-y divide-white/20">
+                    @forelse ($groupCitations as $citation)
+                        <tr class="hover:bg-white/10 transition-all">
+                            <td class="p-3">{{ $citation->title ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->fullname ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->unit ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->designation ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->kingschat ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->phone ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->department ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->group_name ?? 'N/A' }}</td>
+                            <td class="p-3">{{ $citation->period ?? 'N/A' }}</td>
+                            <td class="p-3 flex items-center space-x-2">
+                                <span>{{ Str::limit($citation->citation ?? 'N/A', 30, '...') }}</span>
+                                @if (strlen($citation->citation ?? '') > 30)
+                                    <button
+                                        onclick="openGroupModal('{{ addslashes($citation->fullname ?? '') }}', '{{ addslashes($citation->citation ?? '') }}')"
+                                        class="text-indigo-400 underline ml-2 hover:text-indigo-200 transition-all">
+                                        View More
+                                    </button>
+                                @endif
+                            </td>
+                            <td class="p-3">{{ $citation->created_at?->format('d-m-Y H:i') ?? 'N/A' }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="11" class="p-4 text-center text-white/80">No group citations found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            {{-- Group Pagination --}}
+            <div class="mt-6">
+                {{ $groupCitations->links() }}
+            </div>
+        </div>
+
+        <!-- ===================== MODALS ===================== -->
+        <!-- Department Modal -->
+        <div id="departmentModal" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/50">
+            <div
+                class="bg-white/10 backdrop-blur-md rounded-xl shadow-lg max-w-lg w-full p-6 relative overflow-y-auto max-h-[90vh]">
+                <button onclick="closeDepartmentModal()"
+                    class="absolute top-3 right-3 text-white hover:text-red-400 font-bold text-2xl">&times;</button>
+                <h2 class="text-xl font-semibold text-white mb-4" id="departmentModalName"></h2>
+                <p class="text-white/90 text-lg break-words" id="departmentModalCitation"></p>
+            </div>
+        </div>
+
+        <!-- Group Modal -->
+        <div id="groupModal" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/50">
+            <div
+                class="bg-white/10 backdrop-blur-md rounded-xl shadow-lg max-w-lg w-full p-6 relative overflow-y-auto max-h-[90vh]">
+                <button onclick="closeGroupModal()"
+                    class="absolute top-3 right-3 text-white hover:text-red-400 font-bold text-2xl">&times;</button>
+                <h2 class="text-xl font-semibold text-white mb-4" id="groupModalName"></h2>
+                <p class="text-white/90 text-lg break-words" id="groupModalCitation"></p>
+            </div>
+        </div>
+
+        <!-- ===================== SCRIPTS ===================== -->
+        <script>
+            // ------------------ Department Modal ------------------
+            function openDepartmentModal(name, citation) {
+                document.getElementById('departmentModalName').innerText = name;
+                document.getElementById('departmentModalCitation').innerText = citation;
+                document.getElementById('departmentModal').classList.remove('hidden');
+                document.getElementById('departmentModal').classList.add('flex');
             }
-        }
-    </script>
 
-    <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-        }
+            function closeDepartmentModal() {
+                document.getElementById('departmentModal').classList.add('hidden');
+                document.getElementById('departmentModal').classList.remove('flex');
+            }
 
-        button,
-        a {
-            transition: all 0.3s ease;
-        }
-    </style>
+            // ------------------ Group Modal ------------------
+            function openGroupModal(name, citation) {
+                document.getElementById('groupModalName').innerText = name;
+                document.getElementById('groupModalCitation').innerText = citation;
+                document.getElementById('groupModal').classList.remove('hidden');
+                document.getElementById('groupModal').classList.add('flex');
+            }
 
+            function closeGroupModal() {
+                document.getElementById('groupModal').classList.add('hidden');
+                document.getElementById('groupModal').classList.remove('flex');
+            }
 
-    {{-- SEARCHBAR --}}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-            const table = document.querySelector('table tbody');
-
-            searchInput.addEventListener('input', function() {
+            // ------------------ Live Search ------------------
+            document.getElementById('departmentSearch').addEventListener('keyup', function() {
                 const filter = this.value.toLowerCase();
-                const rows = table.querySelectorAll('tr');
-
-                rows.forEach(row => {
-                    const fullname = row.cells[1].textContent.toLowerCase();
-                    const group = row.cells[7].textContent.toLowerCase();
-                    const department = row.cells[6].textContent.toLowerCase();
-
-                    if (fullname.includes(filter) || group.includes(filter) || department.includes(
-                            filter)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
+                document.querySelectorAll('#departmentTable tbody tr').forEach(row => {
+                    row.style.display = row.innerText.toLowerCase().includes(filter) ? '' : 'none';
                 });
             });
-        });
-    </script>
 
-    {{-- EXPORT DATA --}}
-
-    <script>
-        function exportData(format) {
-            const filteredData = [];
-
-            document.querySelectorAll('tbody tr').forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells.length) {
-                    filteredData.push({
-                        title: cells[0].innerText,
-                        fullname: cells[1].innerText,
-                        unit: cells[2].innerText,
-                        designation: cells[4].innerText,
-                        kingschat: cells[5].innerText,
-                        phone: cells[6].innerText,
-                        citation: cells[7].innerText,
-                        created_at: cells[8].innerText
-                    });
-                }
+            document.getElementById('groupSearch').addEventListener('keyup', function() {
+                const filter = this.value.toLowerCase();
+                document.querySelectorAll('#groupTable tbody tr').forEach(row => {
+                    row.style.display = row.innerText.toLowerCase().includes(filter) ? '' : 'none';
+                });
             });
+        </script>
 
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/citations/export/${format}`;
-            form.style.display = 'none';
 
-            const token = document.createElement('input');
-            token.name = '_token';
-            token.value = '{{ csrf_token() }}';
-            form.appendChild(token);
 
-            const input = document.createElement('input');
-            input.name = 'filteredData';
-            input.value = JSON.stringify(filteredData);
-            form.appendChild(input);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-    </script>
-
-    <script>
-        document.querySelectorAll('button[data-type]').forEach(button => {
-            button.addEventListener('click', () => {
-                const type = button.getAttribute('data-type');
-                // Redirect to export route with type and all=1 to export all data
-                window.location.href = `/citations/export?type=${type}&all=1`;
-            });
-        });
-    </script>
 
 </body>
 

@@ -111,7 +111,6 @@
                     <i data-feather="briefcase" class="w-4 h-4"></i>
                     <span id="selectedDepartmentName">—</span>
                 </span>
-
             </li>
         </ol>
     </nav>
@@ -227,15 +226,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col">
                         <label class="mb-1">Department</label>
-                        <div class="flex flex-col">
-                            <div class="flex items-center space-x-2">
-                                <i data-feather="briefcase" class="w-5 h-5 text-gray-700"></i>
-                                <input id="departmentInput" type="text" name="department"
-                                    class="w-full p-3 rounded-lg text-black text-black"
-                                    placeholder="Select Department" readonly>
-                            </div>
+                        <div class="flex items-center space-x-2">
+                            <i data-feather="briefcase" class="w-5 h-5 text-gray-700"></i>
+                            <input id="departmentInput" type="text" name="department"
+                                class="w-full p-3 rounded-lg text-black" placeholder="Select Department" readonly>
                         </div>
-
                     </div>
                 </div>
                 <div class="flex justify-between mt-4">
@@ -274,16 +269,14 @@
                                 <div class="flex items-start space-x-2 w-full">
                                     <div class="flex-1">
                                         <textarea id="citation" name="citation" rows="6" class="w-full p-3 rounded-lg text-black"
-                                            placeholder="Enter your citation (max: 150 words & 150 letters)" required></textarea>
+                                            placeholder="Enter your citation (max: 150 words)" required></textarea>
 
                                         <p id="citationError" class="text-red-600 text-sm mt-1 hidden"></p>
-                                        <p id="citationCount" class="text-gray-600 text-sm mt-1"></p>
+                                        <p id="citationCount" class="text-gray-600 text-sm mt-1">0 / 150 words</p>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="flex justify-between mt-4">
@@ -431,35 +424,160 @@
     </script>
 
     {{-- CITATION --}}
-  <script>
-document.getElementById("citation").addEventListener("input", function () {
-    let text = this.value.trim();
+    <script>
+        document.getElementById("citation").addEventListener("input", function() {
+            let text = this.value.trim();
 
-    // Count words
-    let words = text.split(/\s+/).filter(word => word.length > 0);
-    let wordCount = words.length;
+            // Count words
+            let words = text.split(/\s+/).filter(word => word.length > 0);
+            let wordCount = words.length;
 
-    let errorMsg = document.getElementById("citationError");
-    let countDisplay = document.getElementById("citationCount");
+            let errorMsg = document.getElementById("citationError");
+            let countDisplay = document.getElementById("citationCount");
 
-    // Update counter
-    countDisplay.textContent = wordCount + " / 150 words";
+            // Update counter
+            countDisplay.textContent = wordCount + " / 150 words";
 
-    // Check limit
-    if (wordCount > 150) {
-        errorMsg.textContent = "You have reached the maximum of 150 words.";
-        errorMsg.classList.remove("hidden");
+            // Check limit
+            if (wordCount > 150) {
+                errorMsg.textContent = "You have reached the maximum of 150 words.";
+                errorMsg.classList.remove("hidden");
 
-        // Prevent typing more — revert to first 150 words
-        this.value = words.slice(0, 150).join(" ");
+                // Prevent typing more — revert to first 150 words
+                this.value = words.slice(0, 150).join(" ");
 
-        // Recalculate after trim
-        countDisplay.textContent = "150 / 150 words";
-    } else {
-        errorMsg.classList.add("hidden");
-    }
-});
-</script>
+                // Recalculate after trim
+                countDisplay.textContent = "150 / 150 words";
+            } else {
+                errorMsg.classList.add("hidden");
+            }
+        });
+    </script>
+
+    <script>
+        const citationInput = document.getElementById('citation');
+        const citationCount = document.getElementById('citationCount');
+        const citationError = document.getElementById('citationError');
+        const maxWords = 150;
+
+        citationInput.addEventListener('input', () => {
+            let text = citationInput.value;
+            let words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            let wordCount = words.length;
+
+            // Update live word count
+            citationCount.textContent = `${wordCount} / ${maxWords} words`;
+
+            if (wordCount > maxWords) {
+                citationError.textContent = `You have exceeded the maximum of ${maxWords} words!`;
+                citationError.classList.remove('hidden');
+            } else {
+                citationError.classList.add('hidden');
+            }
+        });
+
+        // Optional: Prevent form submission if word limit exceeded
+        document.querySelector('form').addEventListener('submit', function(e) {
+            let text = citationInput.value;
+            let words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            if (words.length > maxWords) {
+                e.preventDefault();
+                citationError.textContent = `Cannot submit. Maximum ${maxWords} words allowed.`;
+                citationError.classList.remove('hidden');
+            }
+        });
+    </script>
+
+    <!-- Feather icons initialization -->
+    <script>
+        feather.replace();
+    </script>
+
+
+    <script>
+        feather.replace();
+
+        // Get selected department from localStorage
+        const selectedDept = localStorage.getItem('selectedDepartment');
+
+        if (selectedDept) {
+            // Update breadcrumb
+            const breadcrumbDept = document.getElementById('selectedDepartmentName');
+            if (breadcrumbDept) {
+                breadcrumbDept.textContent = selectedDept;
+            }
+
+            // Update input field
+            const departmentInput = document.getElementById('departmentInput');
+            if (departmentInput) {
+                departmentInput.value = selectedDept;
+            }
+
+            // Optional: jump to Step 2 if using multi-step form
+            if (typeof currentStep !== 'undefined' && typeof showStep === 'function') {
+                currentStep = 1; // Step 2 index
+                showStep(currentStep);
+            }
+        }
+
+
+        const steps = document.querySelectorAll('.form-step');
+        let currentStep = 0;
+
+        // Show only the current step
+        function showStep(index) {
+            steps.forEach((step, i) => step.classList.toggle('hidden', i !== index));
+        }
+        showStep(currentStep);
+
+        // Next step
+        function nextStep() {
+            const inputs = steps[currentStep].querySelectorAll('input, textarea, select');
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    return; // stop if required input is missing
+                }
+            }
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Previous step
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Prefill department from URL or localStorage
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const department = urlParams.get("department") || localStorage.getItem("selectedDepartment");
+            if (department) {
+                const deptInput = document.getElementById("departmentInput");
+                const breadcrumbDept = document.getElementById("selectedDepartmentName");
+                if (deptInput) deptInput.value = department;
+                if (breadcrumbDept) breadcrumbDept.textContent = department;
+
+                // Start on Step 2 if department already selected
+                currentStep = 1;
+                showStep(currentStep);
+            }
+        });
+    </script>
+
 
 
 

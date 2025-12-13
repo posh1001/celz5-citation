@@ -27,6 +27,9 @@
 </head>
 
 <body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex flex-col items-center ">
+<nav class="flex items-center w-full bg-transparent">
+    <img src="/images/logo2.png" alt="Logo" class="h-10 w-auto">
+</nav>
 
    <section
     class="relative flex flex-col md:flex-row-reverse w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 overflow-hidden glass py-20 px-6 md:px-12 lg:px-24 items-center justify-center min-h-[60vh] text-white">

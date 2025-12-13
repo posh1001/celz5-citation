@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('fullname');
             $table->string('unit');
-            $table->string('group');
             $table->string('designation')->nullable();
             $table->string('kingschat')->nullable();
             $table->string('phone')->nullable();
             $table->string('department');
+            $table->string('group_name');
             $table->string('period')->nullable();
             $table->text('citation');
             $table->timestamps();

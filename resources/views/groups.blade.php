@@ -44,18 +44,18 @@ const groups = [
 
 const container = document.getElementById('groupContainer');
 
-groups.forEach(group => {
+groups.forEach(group_name => {
     const card = document.createElement('div');
     card.className = "glass p-4 rounded-xl shadow-md flex flex-col items-center text-center hover:scale-105 transition-transform";
     card.innerHTML = `
         <i data-feather="map-pin" class="w-8 h-8 text-white mb-2"></i>
-        <p class="text-white font-semibold">${group}</p>
+        <p class="text-white font-semibold">${group_name}</p>
         <p class="text-white/60 text-sm mt-1">Click to submit your citation</p>
     `;
 
     // Click handler: store group and redirect
     card.addEventListener('click', () => {
-        localStorage.setItem("selectedGroup", group);
+        localStorage.setItem("selectedGroup", group_name);
         window.location.href = "http://127.0.0.1:8000/group-form";
     });
 
@@ -65,6 +65,34 @@ groups.forEach(group => {
 // Re-render icons
 feather.replace();
 </script>
+
+<script>
+feather.replace();
+
+// Get selected group from localStorage
+const selectedGroup = localStorage.getItem('selectedGroup');
+
+if (selectedGroup) {
+    // Update breadcrumb
+    const breadcrumbGroup = document.getElementById('selectedGroupName');
+    if (breadcrumbGroup) {
+        breadcrumbGroup.textContent = selectedGroup;
+    }
+
+    // Update input field
+    const groupInput = document.getElementById('groupInput');
+    if (groupInput) {
+        groupInput.value = selectedGroup;
+    }
+
+    // Optional: jump to Step 2 if using multi-step form
+    if (typeof currentStep !== 'undefined' && typeof showStep === 'function') {
+        currentStep = 1; // Step 2 index
+        showStep(currentStep);
+    }
+}
+</script>
+
 
 </body>
 </html>

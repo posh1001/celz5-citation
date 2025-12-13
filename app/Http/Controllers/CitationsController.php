@@ -2,101 +2,132 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\DepartmentForm;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Exports\CitationsExport;
-use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\IOFactory;
+use App\Models\DepartmentForm;
+use App\Models\GroupForm;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 class CitationsController extends Controller
 {
     /**
-     * Display dashboard cards and paginated citations table.
+     * Display dashboard with both department and group forms.
      */
     public function index(Request $request)
     {
-        $query = DepartmentForm::query();
+        $search = $request->input('search');
 
-        // Apply search filter if provided
-        if ($search = $request->input('search')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('fullname', 'like', "%{$search}%")
-                  ->orWhere('title', 'like', "%{$search}%")
+        // -------------------------
+        // Departments Table
+        // -------------------------
+        $departmentsQuery = DepartmentForm::query();
+
+        if ($search) {
+            $departmentsQuery->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('fullname', 'like', "%{$search}%")
                   ->orWhere('unit', 'like', "%{$search}%")
-                  ->orWhere('department', 'like', "%{$search}%")
                   ->orWhere('designation', 'like', "%{$search}%")
                   ->orWhere('kingschat', 'like', "%{$search}%")
                   ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('department', 'like', "%{$search}%")
+                  ->orWhere('period', 'like', "%{$search}%")
                   ->orWhere('citation', 'like', "%{$search}%");
             });
         }
 
-        // Paginate results with query string preservation
-        $citations = $query->latest()->paginate(10)->withQueryString();
+        $departments = $departmentsQuery->orderByDesc('created_at')
+            ->paginate(10, ['*'], 'departmentsPage');
 
-        // Dashboard counts
-        $departmentsCount = DepartmentForm::whereNotNull('department')
-            ->where('department', '!=', '')
-            ->distinct('department')
-            ->count('department');
+        // -------------------------
+        // Groups Table
+        // -------------------------
+        $groupsQuery = GroupForm::query();
 
-        $citationsCount = DepartmentForm::count();
-
-        return view('citations', compact('citations', 'departmentsCount', 'citationsCount'));
-    }
-
-    /**
-     * Export all citations as Excel, CSV, or PDF.
-     */
-    public function export(Request $request)
-    {
-        $type = $request->query('type', 'excel');
-        $all = (bool) $request->query('all', true);
-
-        // Fetch data
-        $citations = $all
-            ? DepartmentForm::latest()->get()
-            : DepartmentForm::latest()->paginate(50);
-
-        switch ($type) {
-            case 'csv':
-                return Excel::download(new CitationsExport($citations), 'citations.csv', \Maatwebsite\Excel\Excel::CSV);
-
-            case 'pdf':
-                $pdf = Pdf::loadView('exports.citations_pdf', ['citations' => $citations]);
-                return $pdf->download('citations.pdf');
-
-            case 'excel':
-            default:
-                return Excel::download(new CitationsExport($citations), 'citations.xlsx');
+        if ($search) {
+            $groupsQuery->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('fullname', 'like', "%{$search}%")
+                  ->orWhere('unit', 'like', "%{$search}%")
+                  ->orWhere('designation', 'like', "%{$search}%")
+                  ->orWhere('kingschat', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('group_name', 'like', "%{$search}%")
+                  ->orWhere('period', 'like', "%{$search}%")
+                  ->orWhere('citation', 'like', "%{$search}%");
+            });
         }
+
+        $groups = $groupsQuery->orderByDesc('created_at')
+            ->paginate(10, ['*'], 'groupsPage');
+
+        // -------------------------
+        // Counts
+        // -------------------------
+        $departmentsCount = DepartmentForm::count();
+        $groupsCount = GroupForm::count();
+        $citationsCount = $departmentsCount + $groupsCount;
+
+        // -------------------------
+        // Return view with both tables
+        // -------------------------
+        return view('citations', [
+            'departmentCitations' => $departments,
+            'groupCitations' => $groups,
+            'departmentsCount' => $departmentsCount,
+            'groupsCount' => $groupsCount,
+            'citationsCount' => $citationsCount,
+            'filter' => 'all',
+        ]);
     }
 
-    /**
-     * Export all citations as a Word document.
-     */
-    public function exportWord()
-    {
-        $citations = DepartmentForm::latest()->get();
-        $export = new CitationsExport($citations);
+    // ------------------- EXPORT METHODS -------------------
 
-        $data = $export->collection()->toArray(); // array of rows
+    public function exportExcel(Request $request)
+    {
+        $filter = $request->query('filter', 'all');
+        $data = $this->getFilteredData($filter);
+        return Excel::download(new CitationsExport($data), $filter.'_citations.xlsx');
+    }
+
+    public function exportCSV(Request $request)
+    {
+        $filter = $request->query('filter', 'all');
+        $data = $this->getFilteredData($filter);
+        return Excel::download(new CitationsExport($data), $filter.'_citations.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function exportPDF(Request $request)
+    {
+        $filter = $request->query('filter', 'all');
+        $data = $this->getFilteredData($filter);
+        return Pdf::loadView('exports.citations_pdf', ['citations' => $data])->download($filter.'_citations.pdf');
+    }
+
+    public function exportWord(Request $request)
+    {
+        $filter = $request->query('filter', 'all');
+        $data = $this->getFilteredData($filter);
+
+        $export = new CitationsExport($data);
+        $rows = $export->collection()->toArray();
         $headers = $export->headings();
 
-        $phpWord = new PhpWord();
+        $phpWord = new PhpWord;
         $section = $phpWord->addSection();
+        $section->addText(ucfirst($filter).' Citations Report', ['bold' => true, 'size' => 16]);
 
-        $section->addText("Citations Report", ['bold' => true, 'size' => 16]);
-
-        // Table style
-        $tableStyle = [
+        $phpWord->addTableStyle('CitationsTable', [
             'borderSize' => 6,
             'borderColor' => '999999',
-            'cellMargin' => 80
-        ];
-        $phpWord->addTableStyle('CitationsTable', $tableStyle);
+            'cellMargin' => 80,
+        ]);
+
         $table = $section->addTable('CitationsTable');
 
         // Header row
@@ -106,19 +137,34 @@ class CitationsController extends Controller
         }
 
         // Data rows
-        foreach ($data as $row) {
+        foreach ($rows as $row) {
             $table->addRow();
             foreach ($row as $cell) {
                 $table->addCell(2000)->addText($cell ?? 'N/A');
             }
         }
 
-        // Prepare Word file
-        $fileName = 'citations.docx';
+        $fileName = $filter.'_citations.docx';
         $tempFile = tempnam(sys_get_temp_dir(), $fileName);
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save($tempFile);
+        IOFactory::createWriter($phpWord, 'Word2007')->save($tempFile);
 
         return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Helper: get data based on filter
+     */
+    private function getFilteredData($filter)
+    {
+        if ($filter === 'departments') {
+            return DepartmentForm::all();
+        } elseif ($filter === 'groups') {
+            return GroupForm::all();
+        } else {
+            return DepartmentForm::all()->merge(GroupForm::all())->map(function ($item) {
+                $item->created_at = Carbon::parse($item->created_at);
+                return $item;
+            });
+        }
     }
 }

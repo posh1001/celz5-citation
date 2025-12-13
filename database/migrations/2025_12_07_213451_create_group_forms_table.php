@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('designation');
             $table->string('kingschat');
             $table->string('phone');
-            $table->string('department');
+            $table->string('group_name');
             $table->string('period');
             $table->text('citation');
             $table->timestamps();

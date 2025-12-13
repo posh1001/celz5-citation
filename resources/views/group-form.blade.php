@@ -151,7 +151,7 @@
         @endif
 
         <form id="multiStepForm" class="space-y-6 text-white" method="POST"
-            action="{{ route('department-form.store') }}">
+           action="{{ route('group-form.store') }}">
 
             @csrf
             <!-- Step 1: Personal Info -->
@@ -221,29 +221,26 @@
             <div class="form-step hidden space-y-6">
                 <h2 class="text-xl font-semibold mb-4 flex items-center space-x-2">
                     <i data-feather="layers" class="w-6 h-6 text-white"></i>
-                    <span>Step 2: Departments</span>
+                    <span>Step 2: Groups</span>
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex flex-col relative">
-                        <label class="mb-1 text-gray-800">Department</label>
+                <label class="mb-1 text-gray-800">Groups</label>
+                <div class="relative">
 
-                        <!-- Dropdown Trigger -->
-                        <div id="departmentTrigger"
-                            class="flex items-center space-x-2 bg-white p-3 rounded-lg cursor-pointer border">
-                            <i data-feather="briefcase" class="w-5 h-5 text-gray-700"></i>
-                            <input id="departmentInput" type="text" name="department"
-                                class="w-full text-black focus:outline-none cursor-pointer"
-                                placeholder="Select Department" readonly>
-                        </div>
+                    <div id="groupTrigger"
+                        class="flex items-center space-x-2 bg-white p-3 rounded-lg cursor-pointer border">
+                        <i data-feather="users" class="w-5 h-5 text-gray-700"></i>
+                        <input id="groupInput" type="text" name="group_name"
+                            class="w-full text-black focus:outline-none cursor-pointer" placeholder="Select Group"
+                            readonly>
+                    </div>
 
-                        <!-- Dropdown Menu -->
-                        <div id="departmentDropdown"
-                            class="absolute top-full mt-1 w-full bg-white text-black shadow-lg rounded-lg border hidden z-20">
-                            <ul class="max-h-56 overflow-y-auto" id="departmentList"></ul>
-                        </div>
+                    <div id="groupDropdown"
+                        class="absolute left-0 right-0 mt-1 bg-white shadow-lg rounded-lg border hidden z-20">
+                        <ul id="groupList" class="max-h-56 overflow-y-auto text-black"></ul>
                     </div>
 
                 </div>
+
                 <div class="flex justify-between mt-4">
                     <button type="button"
                         class="bg-white text-indigo-600 px-6 py-2 rounded-lg font-semibold hover:bg-indigo-50"
@@ -280,7 +277,7 @@
                                 <div class="flex items-start space-x-2 w-full">
                                     <div class="flex-1">
                                         <textarea id="citation" name="citation" rows="6" class="w-full p-3 rounded-lg text-black"
-                                            placeholder="Enter your citation (max: 150 words & 150 letters)" required></textarea>
+                                            placeholder="Enter your citation (max: 150 words)" required></textarea>
 
                                         <p id="citationError" class="text-red-600 text-sm mt-1 hidden"></p>
                                         <p id="citationCount" class="text-gray-600 text-sm mt-1"></p>
@@ -338,17 +335,22 @@
 
         // Prefill form when department or group card is clicked
         function prefillForm(department, group) {
-            if (department) {
-                document.querySelector('select[name="department"]').value = department;
-                document.getElementById('selectedDepartment').querySelector('span').textContent = department;
-            }
+
+            // Show selected GROUP in the input field
             if (group) {
-                document.querySelector('select[name="group"]').value = group;
+                document.getElementById('departmentInput').value = group;
             }
+
+            // (Optional) still store department somewhere if needed
+            if (department) {
+                document.querySelector('input[name="department"]').dataset.department = department;
+            }
+
             // Scroll to form and show Step 2
             document.getElementById('multiStepForm').scrollIntoView({
                 behavior: 'smooth'
             });
+
             steps.forEach((step, i) => step.classList.toggle('hidden', i !== 1));
             currentStep = 1;
             updateProgressBar();
@@ -479,73 +481,126 @@
     </script>
 
 
-   <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const departments = [
-        "Cell ministry",
-        "Zonal operations",
-        "Church admin/pioneering& visitation",
-        "Rhapsody of realities",
-        "Healing school",
-        "Finance",
-        "Tv production",
-        "Ministry material",
-        "Foundation school and first timer ministries",
-        "Love world music department",
-        "Global mission mandate/ hr/admin department",
-        "Children and women ministries",
-        "LMMS, LXP, MINISTRY PROG.BIBLES PARTNERSHIP DEPT",
-        "LW USA, LTM/RADIO BRANDS, INNER CITY MISSIONS",
-        "Follow up department"
-    ];
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const departments = [
+                "Cell ministry",
+                "Zonal operations",
+                "Church admin/pioneering& visitation",
+                "Rhapsody of realities",
+                "Healing school",
+                "Finance",
+                "Tv production",
+                "Ministry material",
+                "Foundation school and first timer ministries",
+                "Love world music department",
+                "Global mission mandate/ hr/admin department",
+                "Children and women ministries",
+                "LMMS, LXP, MINISTRY PROG.BIBLES PARTNERSHIP DEPT",
+                "LW USA, LTM/RADIO BRANDS, INNER CITY MISSIONS",
+                "Follow up department"
+            ];
 
-    const trigger = document.getElementById("departmentTrigger");
-    const dropdown = document.getElementById("departmentDropdown");
-    const input = document.getElementById("departmentInput");
-    const listContainer = document.getElementById("departmentList");
+            const trigger = document.getElementById("departmentTrigger");
+            const dropdown = document.getElementById("departmentDropdown");
+            const input = document.getElementById("departmentInput");
+            const listContainer = document.getElementById("departmentList");
 
-    // Build list dynamically
-    departments.forEach(dep => {
-        const li = document.createElement("li");
-        li.textContent = dep;
-        li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
-        li.addEventListener("click", () => {
-            input.value = dep;  // Update input
-            dropdown.classList.add("hidden");  // Close dropdown
+            // Build list dynamically
+            departments.forEach(dep => {
+                const li = document.createElement("li");
+                li.textContent = dep;
+                li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
+                li.addEventListener("click", () => {
+                    input.value = dep; // Update input
+                    dropdown.classList.add("hidden"); // Close dropdown
 
-            // Optional: Update breadcrumb
-            const breadcrumbDept = document.getElementById("selectedDepartmentName");
-            if (breadcrumbDept) breadcrumbDept.textContent = dep;
+                    // Optional: Update breadcrumb
+                    const breadcrumbDept = document.getElementById("selectedDepartmentName");
+                    if (breadcrumbDept) breadcrumbDept.textContent = dep;
 
-            // Optional: Save to localStorage to remember selection across pages
-            localStorage.setItem("selectedDepartment", dep);
+                    // Optional: Save to localStorage to remember selection across pages
+                    localStorage.setItem("selectedDepartment", dep);
+                });
+                listContainer.appendChild(li);
+            });
+
+            // Toggle dropdown
+            trigger.addEventListener("click", () => {
+                dropdown.classList.toggle("hidden");
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener("click", (e) => {
+                if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.add("hidden");
+                }
+            });
+
+            // Prefill input from localStorage if available
+            const savedDept = localStorage.getItem("selectedDepartment");
+            if (savedDept && input) {
+                input.value = savedDept;
+                const breadcrumbDept = document.getElementById("selectedDepartmentName");
+                if (breadcrumbDept) breadcrumbDept.textContent = savedDept;
+            }
+
+            feather.replace();
         });
-        listContainer.appendChild(li);
-    });
+    </script>
 
-    // Toggle dropdown
-    trigger.addEventListener("click", () => {
-        dropdown.classList.toggle("hidden");
-    });
+    {{-- GROUPS DROPDOWN --}}
 
-    // Close dropdown when clicking outside
-    document.addEventListener("click", (e) => {
-        if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.classList.add("hidden");
-        }
-    });
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-    // Prefill input from localStorage if available
-    const savedDept = localStorage.getItem("selectedDepartment");
-    if (savedDept && input) {
-        input.value = savedDept;
-        const breadcrumbDept = document.getElementById("selectedDepartmentName");
-        if (breadcrumbDept) breadcrumbDept.textContent = savedDept;
-    }
+            const groupInput = document.getElementById('groupInput');
+            const groupDropdown = document.getElementById('groupDropdown');
+            const groupTrigger = document.getElementById('groupTrigger');
+            const groupList = document.getElementById('groupList');
 
-    feather.replace();
-});
-</script>
+            const groups = [
+                'Lekki', 'Victoria Island', 'Alasia', 'Ikoyi Group 1', 'Ikoyi Group 2',
+                'Ajiwe', 'Obalende', 'Mobil', 'Chevron', 'Onishon', 'Ajah', 'Kajola',
+                'Lekki Phase 1', 'Epe', 'Lagos Island', 'Youth Group', 'Owode Badore',
+                'Free Trade Zone', 'Eputu', 'Ogombo', 'Abijo', 'Tedo'
+            ];
+
+            // Populate dropdown
+            groupList.innerHTML = groups.map(g => `
+        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">${g}</li>
+    `).join('');
+
+            // Auto-fill from Groups page
+            const savedGroup = localStorage.getItem('selectedGroup');
+            if (savedGroup) {
+                groupInput.value = savedGroup;
+                localStorage.removeItem('selectedGroup'); // clean up
+            }
+
+            // Toggle dropdown
+            groupTrigger.addEventListener('click', () => {
+                groupDropdown.classList.toggle('hidden');
+            });
+
+            // Select group
+            groupList.addEventListener('click', e => {
+                if (e.target.tagName === 'LI') {
+                    groupInput.value = e.target.textContent.trim();
+                    groupDropdown.classList.add('hidden');
+                }
+            });
+
+            // Close on outside click
+            document.addEventListener('click', e => {
+                if (!groupTrigger.contains(e.target) && !groupDropdown.contains(e.target)) {
+                    groupDropdown.classList.add('hidden');
+                }
+            });
+
+        });
+    </script>
+
 
 
 </body>

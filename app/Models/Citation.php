@@ -17,6 +17,7 @@ class Citation extends Model
         'kingschat',
         'phone',
         'department',
+        'group_name',
         'period',
         'citation'
     ];

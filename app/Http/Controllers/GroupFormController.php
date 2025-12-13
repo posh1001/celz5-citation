@@ -30,7 +30,7 @@ class GroupFormController extends Controller
             'designation' => 'required|string|max:100',
             'kingschat' => 'required|string|max:50',
             'phone' => 'required|string|max:20',
-            'department' => 'required|string|max:255',
+            'group_name' => 'required|string|max:255',
             'period' => 'required|string|max:50',
             'citation' => [
                 'required',
@@ -52,30 +52,32 @@ class GroupFormController extends Controller
     /**
      * Display all group submissions (for dashboard).
      */
-    public function index(Request $request)
-    {
-        $query = GroupForm::query();
+  public function index(Request $request)
+{
+    $query = GroupForm::query();
 
-        if ($request->has('search') && $request->search != '') {
-            $search = $request->search;
-            $query->where('fullname', 'like', "%{$search}%")
-                  ->orWhere('title', 'like', "%{$search}%")
-                  ->orWhere('unit', 'like', "%{$search}%")
-                  ->orWhere('department', 'like', "%{$search}%");
-        }
-
-        $submissions = $query->latest()->get();
-
-        $departmentsCount = GroupForm::distinct('department')->count('department');
-        $citationsCount = GroupForm::count();
-
-        return view('citations', compact(
-            'submissions',
-            'departmentsCount',
-            'citationsCount'
-        ));
+    if ($request->has('search') && $request->search != '') {
+        $search = $request->search;
+        $query->where('fullname', 'like', "%{$search}%")
+              ->orWhere('title', 'like', "%{$search}%")
+              ->orWhere('unit', 'like', "%{$search}%")
+              ->orWhere('department', 'like', "%{$search}%")
+              ->orWhere('group_name', 'like', "%{$search}%");
     }
 
+    $citations = $query->latest()->paginate(10); // must be called $citations for Blade
+
+    $departmentsCount = GroupForm::distinct('department')->count('department');
+    $citationsCount = GroupForm::count();
+    $groupsCount = GroupForm::distinct('group_name')->count('group_name'); // <- Add this
+
+    return view('citations', compact(
+        'citations',
+        'departmentsCount',
+        'citationsCount',
+        'groupsCount'
+    ));
+}
     /**
      * Export group submissions as Excel.
      */
