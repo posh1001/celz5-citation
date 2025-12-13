@@ -174,7 +174,7 @@
             localStorage.setItem("selectedDepartment", departmentName);
 
             // Redirect to the form page
-            window.location.href = "/dept-form"; // Change this to your actual form route
+            window.location.href = "citations.christembassylz5.org/dept-form"; // Change this to your actual form route
         }
     </script>
 
